@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart'; // Importa el paquete principal de Flutter para UI
+import 'styles/styles.dart';
+import 'tabmain.dart';
 
 // Widget sin estado para la pantalla de login
 class LoginScreen extends StatelessWidget {
@@ -28,87 +30,30 @@ class LoginScreen extends StatelessWidget {
               // Título de bienvenida
               const Text(
                 'INDI',
-                style: TextStyle(
-                  fontSize: 38, // Tamaño de letra
-                  fontWeight: FontWeight.bold, // Negrita
-                  fontFamily: 'Times New Roman', // Fuente específica
-                ),
+                style: AppStyles.title, // Usando estilo separado
               ),
 
               const SizedBox(height: 32), // Espacio vertical
-              // Campo de texto para el correo electrónico
+              // Campo de texto para el usuario
               TextField(
-                decoration: InputDecoration(
-                  labelText: 'Usuario',
-                  labelStyle: const TextStyle(
-                    color: Color(0xFF388E3C), // Cambia el color del label
-                    fontFamily:
-                        'TimesNewRoman', // Cambia la fuente del label (si ya la cargaste)
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.person,
-                    color: Color(0xFF388E3C), // Cambia el color del ícono
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF388E3C),
-                    ), // Borde cuando NO está enfocado
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ), // Borde al enfocar
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                decoration: AppStyles.inputDecoration(
+                  label: 'Usuario',
+                  icon: Icons.person,
                 ),
-                style: const TextStyle(
-                  color: Colors.black, // Color del texto que escribe el usuario
-                  fontFamily:
-                      'TimesNewRoman', // Fuente del texto que escribe el usuario
-                  fontSize: 16,
-                ),
-                keyboardType: TextInputType.emailAddress,
+                style: AppStyles.inputText,
+                keyboardType: TextInputType.text,
               ),
 
               const SizedBox(height: 16), // Espacio entre campos
               // Campo de texto para la contraseña
               TextField(
-                decoration: InputDecoration(
-                  labelText: 'Contraseña',
-                  labelStyle: const TextStyle(
-                    color: Color(0xFF388E3C), // Cambia el color del label
-                    fontFamily:
-                        'TimesNewRoman', // Cambia la fuente del label (si ya la cargaste)
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.lock_outline,
-                    color: Color(0xFF388E3C), // Cambia el color del ícono
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF388E3C),
-                    ), // Borde cuando NO está enfocado
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ), // Borde al enfocar
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                decoration: AppStyles.inputDecoration(
+                  label: 'Contraseña',
+                  icon: Icons.lock_outline,
                 ),
-                style: const TextStyle(
-                  color: Colors.black, // Color del texto que escribe el usuario
-                  fontFamily:
-                      'TimesNewRoman', // Fuente del texto que escribe el usuario
-                  fontSize: 16,
-                ),
-                keyboardType: TextInputType.emailAddress,
+                style: AppStyles.inputText,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
               ),
 
               const SizedBox(height: 24), // Espacio antes del botón
@@ -116,22 +61,15 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF388E3C), // Color de fondo del botón
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    textStyle: const TextStyle(
-                      // Estilo del texto dentro del botón
-                      fontFamily:
-                          'TimesNewRoman', // Asegúrate de tenerla registrada
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    foregroundColor: Colors.white, // Color del texto
-                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TabScreen(),
+                      ),
+                    );
+                  },
+                  style: AppStyles.buttonStyle,
                   child: const Text('Iniciar Sesión'),
                 ),
               ),
