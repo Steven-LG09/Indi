@@ -4,24 +4,27 @@ class AppStyles {
   // Color principal
   static const Color primaryColor = Color(0xFF388E3C);
 
+  // Fuente base
+  static const String fontFamily = 'TimesNewRoman';
+
   // Texto "INDI"
   static const TextStyle title = TextStyle(
     fontSize: 50,
     fontWeight: FontWeight.bold,
-    fontFamily: 'TimesNewRoman',
+    fontFamily: fontFamily,
   );
 
   // Estilo del texto de entrada
   static const TextStyle inputText = TextStyle(
     color: Colors.black,
-    fontFamily: 'TimesNewRoman',
+    fontFamily: fontFamily,
     fontSize: 16,
   );
 
   // Estilo del label (dentro del input)
   static const TextStyle labelText = TextStyle(
     color: primaryColor,
-    fontFamily: 'TimesNewRoman',
+    fontFamily: fontFamily,
     fontSize: 16,
   );
 
@@ -53,10 +56,40 @@ class AppStyles {
     padding: const EdgeInsets.symmetric(vertical: 16),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     textStyle: const TextStyle(
-      fontFamily: 'TimesNewRoman',
+      fontFamily: fontFamily,
       fontSize: 18,
       fontWeight: FontWeight.bold,
     ),
     foregroundColor: Colors.white,
   );
+
+  // Estilo de título para AppBar
+  static const TextStyle appBarTitle = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
+  // Estilo para pestañas seleccionadas
+  static const TextStyle tabSelected = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+
+  // Estilo para pestañas no seleccionadas
+  static const TextStyle tabUnselected = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+  );
+
+  // Estilo para contenido dentro de TabBarView
+  static const TextStyle tabContentText = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16,
+    color: Colors.black,
+  );
+
+
 }

@@ -16,5 +16,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+fonts:
+  - family: TimesNewRoman
+    fonts:
+      - asset: assets/fonts/times_new_roman.ttf
+
+
 flutter: ##dentro de esta sección puedes incluir imágenes, fuentes, etc.
   uses-material-design: true ##activa íconos y estilos de Material Design.

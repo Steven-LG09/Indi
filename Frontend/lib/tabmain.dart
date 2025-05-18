@@ -8,15 +8,22 @@ class TabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4, // Número de pestañas
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Sistema de Inventarios'),
+          title: const Text(
+            'Sistema de Inventarios',
+            style: AppStyles.appBarTitle, // 👈 Usa el estilo del AppBar
+          ),
           backgroundColor: AppStyles.primaryColor,
           bottom: const TabBar(
-            labelColor: Colors.white, // Color del texto seleccionado
-            unselectedLabelColor: Colors.white70, // Color del texto no seleccionado
-            indicatorColor: Colors.white, // Línea bajo la pestaña activa
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
+            indicatorColor: Colors.white,
+            labelStyle:
+                AppStyles.tabSelected, // 👈 Usa estilo para pestaña activa
+            unselectedLabelStyle:
+                AppStyles.tabUnselected, // 👈 Pestaña inactiva
             tabs: [
               Tab(icon: Icon(Icons.eco), text: 'Ornamental'),
               Tab(icon: Icon(Icons.local_hospital), text: 'Medicinal'),
@@ -28,8 +35,24 @@ class TabScreen extends StatelessWidget {
         body: const TabBarView(
           children: [
             OrnamentalScreen(),
-            Center(child: Text('Contenido de Perfil')),
-            Center(child: Text('Contenido de Ajustes')),
+            Center(
+              child: Text(
+                'Contenido de Perfil',
+                style: AppStyles.tabContentText,
+              ),
+            ),
+            Center(
+              child: Text(
+                'Contenido de Ajustes',
+                style: AppStyles.tabContentText,
+              ),
+            ),
+            Center(
+              child: Text(
+                'Contenido de Tierra',
+                style: AppStyles.tabContentText,
+              ),
+            ),
           ],
         ),
       ),
