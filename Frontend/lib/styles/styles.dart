@@ -63,6 +63,18 @@ class AppStyles {
     foregroundColor: Colors.white,
   );
 
+    static final ButtonStyle buttonStyle2 = ElevatedButton.styleFrom(
+    backgroundColor: Color(0xFFFAF9F6),
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    textStyle: const TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+    foregroundColor: primaryColor,
+  );
+
   // Estilo de título para AppBar
   static const TextStyle appBarTitle = TextStyle(
     fontFamily: fontFamily,
@@ -91,5 +103,29 @@ class AppStyles {
     color: Colors.black,
   );
 
+  static const plantName = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    fontFamily: fontFamily,
+  );
 
+  static const quantityText = TextStyle(
+    fontSize: 14,
+    fontFamily: fontFamily,
+  );
+
+  static final cardShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12),
+  );
+
+  static const imageBorderRadius = BorderRadius.only(
+    topLeft: Radius.circular(12),
+    topRight: Radius.circular(12),
+  );
+    static const imageBorderRadius2 = BorderRadius.only(
+    topLeft: Radius.circular(12),
+    topRight: Radius.circular(12),
+    bottomLeft: Radius.circular(12),
+    bottomRight: Radius.circular(12),
+  );
 }
