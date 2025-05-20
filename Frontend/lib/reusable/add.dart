@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart'; // Importa el paquete principal de Flutter para UI
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../styles/styles.dart';
 
 // Widget sin estado para la pantalla de login
@@ -11,6 +13,7 @@ class AddScreen extends StatefulWidget {
 }
 
 class _AddScreenState extends State<AddScreen> {
+  final TextEditingController _controller = TextEditingController();
   String? _selectedCategory;
 
   final List<String> _categories = [
@@ -19,6 +22,28 @@ class _AddScreenState extends State<AddScreen> {
     'Forestal',
     'Tierra',
   ];
+
+  Future<void> addDB() async {
+    final text1 = _controller.text;
+
+    try {
+      final response = await http.post(
+        Uri.parse(
+          'http://192.168.1.6:4000/add',
+        ), 
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'name': text1}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Respuesta del backend: ${response.body}');
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error de conexión: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +80,7 @@ class _AddScreenState extends State<AddScreen> {
 
               const SizedBox(height: 16),
               TextField(
+                controller: _controller,
                 decoration: AppStyles.inputDecoration(
                   label: 'Nombre',
                   icon: Icons.eco,
@@ -70,7 +96,7 @@ class _AddScreenState extends State<AddScreen> {
                   icon: Icons.looks_3,
                 ),
                 style: AppStyles.inputText,
-                keyboardType: TextInputType.number
+                keyboardType: TextInputType.number,
               ),
 
               const SizedBox(height: 16),
@@ -98,9 +124,7 @@ class _AddScreenState extends State<AddScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Acción al enviar
-                  },
+                  onPressed: addDB,
                   style: AppStyles.buttonStyle,
                   child: const Text('Enviar'),
                 ),
