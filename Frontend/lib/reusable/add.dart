@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart'; // Importa el paquete principal de Flutter para UI
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:path/path.dart'
+    as p; // Para obtener el nombre del archivo (basename)
+import 'dart:convert'; // Para convertir objetos a JSON y viceversa
+import 'dart:io'; // Para manejar archivos locales
 import '../styles/styles.dart';
 
 // Widget sin estado para la pantalla de login
@@ -15,6 +18,7 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final TextEditingController _controller = TextEditingController();
   String? _selectedCategory;
+  File? _selectedFile; // Variable para guardar el archivo seleccionado
 
   final List<String> _categories = [
     'Ornamental',
@@ -23,22 +27,70 @@ class _AddScreenState extends State<AddScreen> {
     'Tierra',
   ];
 
+  Future<void> pickFile() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(); // Abre el selector de archivos
+
+    if (result != null && result.files.single.path != null) {
+      // Si el usuario seleccionó un archivo, lo guardamos en _selectedFile
+      setState(() {
+        _selectedFile = File(result.files.single.path!);
+      });
+    }
+  }
+
   Future<void> addDB() async {
-    final text1 = _controller.text;
+    // Validamos que se haya llenado todo
+    if (_selectedFile == null ||
+        _controller.text.isEmpty ||
+        _selectedCategory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor completa todos los campos'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    // Creamos la petición tipo Multipart (permite enviar archivos)
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://192.168.1.6:4000/add'),
+    );
+
+    request.fields['name'] = _controller.text;
+    request.fields['category'] = _selectedCategory!;
+    // Adjuntamos el archivo al formulario
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image', // Nombre con el que lo espera el backend
+        _selectedFile!.path, // Ruta del archivo
+        filename: p.basename(_selectedFile!.path), // Nombre del archivo
+      ),
+    );
 
     try {
-      final response = await http.post(
-        Uri.parse(
-          'http://192.168.1.6:4000/add',
-        ), 
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'name': text1}),
-      );
+      // Enviamos la solicitud y esperamos la respuesta
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      final data = jsonDecode(response.body);
 
-      if (response.statusCode == 200) {
-        print('Respuesta del backend: ${response.body}');
+      if (!mounted) return;
+
+      if (data['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data['message']),
+            backgroundColor: Colors.green,
+          ),
+        );
       } else {
-        print('Error: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data['message'] ?? 'Error desconocido'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       print('Error de conexión: $e');
@@ -66,16 +118,12 @@ class _AddScreenState extends State<AddScreen> {
               const SizedBox(height: 16),
 
               ElevatedButton(
-                onPressed: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles();
-
-                  if (result != null) {
-                    String filePath = result.files.single.path!;
-                    print('Archivo seleccionado: $filePath');
-                  }
-                },
-                child: const Text('Seleccionar Imagen'),
+                onPressed: pickFile,
+                child: Text(
+                  _selectedFile == null
+                      ? 'Seleccionar imagen'
+                      : 'Imagen seleccionada',
+                ),
               ),
 
               const SizedBox(height: 16),

@@ -2,6 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from "mongoose";
+import {
+    google
+} from "googleapis";
+import streamifier from "streamifier";
+import multer from "multer";
 
 dotenv.config();
 
@@ -17,28 +22,114 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.log(err));
 
 const inveSchema = new mongoose.Schema({
-    name: String
+    name: String,
+    productoimage: String
 });
 
 const Inventary = mongoose.models[process.env.COLLECTION_NAME] || mongoose.model(process.env.COLLECTION_NAME, inveSchema);
 
-app.get('/', (req, res) => {
-  res.send('Servidor funcionando correctamente Test 3');
+const upload = multer({
+    storage: multer.memoryStorage()
+});
+const auth = new google.auth.GoogleAuth({
+    credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+    scopes: ["https://www.googleapis.com/auth/drive"],
 });
 
-app.post('/add', async (req, res) => {
+const drive = google.drive({
+    version: "v3",
+    auth
+});
+
+async function makeFilePublic(fileId) {
+    await drive.permissions.create({
+        fileId,
+        requestBody: {
+            role: "reader",
+            type: "anyone",
+        },
+    });
+
+    return `https://lh3.googleusercontent.com/d/${fileId}=w1000`;
+}
+
+app.get('/', (req, res) => {
+    res.send('Servidor funcionando correctamente Test 3');
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        const {
+            user,
+            password
+        } = req.body;
+
+        if (!user || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Información requerida",
+            });
+        }
+
+        if (user == "admin" && password == "test2025") {
+            res.json({
+                message: "Upload successful",
+                success: true
+            });
+        } else {
+            res.json({
+                message: "Credenciales incorrectas",
+                success: false
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Datos invalidos ",
+        });
+    }
+});
+
+app.post('/add', upload.single('image'), async (req, res) => {
     try {
         const {
             name
         } = req.body;
 
+        if (!req.file) return res.status(400).json({
+            error: "No file uploaded"
+        });
+        if (!name) return res.status(400).json({
+            error: "Missing required fields"
+        });
+
+        const fileMetadata = {
+            name: req.file.originalname,
+            parents: [process.env.DRIVE_FOLDER_ID],
+        };
+
+        const media = {
+            mimeType: req.file.mimetype,
+            body: streamifier.createReadStream(req.file.buffer),
+        };
+
+        const response = await drive.files.create({
+            resource: fileMetadata,
+            media: media,
+            fields: "id",
+        });
+
+        const fileId = response.data.id;
+
+        const publicUrl = await makeFilePublic(fileId);
+
         const newProduct = new Inventary({
-            name: name
+            name: name,
+            productoimage: publicUrl
         });
         await newProduct.save();
 
         res.json({
-            message: "Upload successful",
+            message: "Producto agregado de forma exitosa",
             success: true
         });
     } catch (error) {
