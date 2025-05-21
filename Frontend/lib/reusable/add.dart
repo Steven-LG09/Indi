@@ -17,8 +17,10 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
   String? _selectedCategory;
   File? _selectedFile; // Variable para guardar el archivo seleccionado
+  bool _isLoading = false; // Controla si está cargando o no
 
   final List<String> _categories = [
     'Ornamental',
@@ -26,6 +28,24 @@ class _AddScreenState extends State<AddScreen> {
     'Forestal',
     'Tierra',
   ];
+
+  void _showLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // El usuario no puede cerrarlo tocando fuera
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Text("Cargando..."),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Future<void> pickFile() async {
     FilePickerResult? result =
@@ -43,7 +63,8 @@ class _AddScreenState extends State<AddScreen> {
     // Validamos que se haya llenado todo
     if (_selectedFile == null ||
         _controller.text.isEmpty ||
-        _selectedCategory == null) {
+        _selectedCategory == null ||
+        _controller2.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Por favor completa todos los campos'),
@@ -52,6 +73,12 @@ class _AddScreenState extends State<AddScreen> {
       );
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
+    _showLoadingDialog(); // Mostramos el loading
+
     // Creamos la petición tipo Multipart (permite enviar archivos)
     final request = http.MultipartRequest(
       'POST',
@@ -60,6 +87,7 @@ class _AddScreenState extends State<AddScreen> {
 
     request.fields['name'] = _controller.text;
     request.fields['category'] = _selectedCategory!;
+    request.fields['quantity'] = _controller2.text;
     // Adjuntamos el archivo al formulario
     request.files.add(
       await http.MultipartFile.fromPath(
@@ -77,6 +105,11 @@ class _AddScreenState extends State<AddScreen> {
 
       if (!mounted) return;
 
+      Navigator.of(context).pop(); // Cierra el loading
+      setState(() {
+        _isLoading = false;
+      });
+
       if (data['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -93,7 +126,19 @@ class _AddScreenState extends State<AddScreen> {
         );
       }
     } catch (e) {
-      print('Error de conexión: $e');
+      if (mounted) {
+        Navigator.of(context).pop(); // Cierra el loading si hay error
+        setState(() {
+          _isLoading = false;
+        });
+        print('Error de conexión: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error en el producto'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -139,6 +184,7 @@ class _AddScreenState extends State<AddScreen> {
 
               const SizedBox(height: 16),
               TextField(
+                controller: _controller2,
                 decoration: AppStyles.inputDecoration(
                   label: 'Cantidad',
                   icon: Icons.looks_3,

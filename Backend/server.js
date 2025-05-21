@@ -23,7 +23,9 @@ mongoose.connect(process.env.MONGO_URI)
 
 const inveSchema = new mongoose.Schema({
     name: String,
-    productoimage: String
+    productoimage: String,
+    quantity: String,
+    category: String
 });
 
 const Inventary = mongoose.models[process.env.COLLECTION_NAME] || mongoose.model(process.env.COLLECTION_NAME, inveSchema);
@@ -92,13 +94,15 @@ app.post('/login', async (req, res) => {
 app.post('/add', upload.single('image'), async (req, res) => {
     try {
         const {
-            name
+            name,
+            quantity,
+            category
         } = req.body;
 
         if (!req.file) return res.status(400).json({
             error: "No file uploaded"
         });
-        if (!name) return res.status(400).json({
+        if (!name || !quantity || !category) return res.status(400).json({
             error: "Missing required fields"
         });
 
@@ -124,7 +128,9 @@ app.post('/add', upload.single('image'), async (req, res) => {
 
         const newProduct = new Inventary({
             name: name,
-            productoimage: publicUrl
+            productoimage: publicUrl,
+            quantity: quantity,
+            category: category
         });
         await newProduct.save();
 
