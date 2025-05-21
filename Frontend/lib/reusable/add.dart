@@ -105,10 +105,11 @@ class _AddScreenState extends State<AddScreen> {
 
       if (!mounted) return;
 
-      Navigator.of(context).pop(); // Cierra el loading
+      Navigator.of(context, rootNavigator: true).pop(); //Esto cierra SOLO el diálogo
       setState(() {
         _isLoading = false;
       });
+      Navigator.of(context).pop();
 
       if (data['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -127,10 +128,11 @@ class _AddScreenState extends State<AddScreen> {
       }
     } catch (e) {
       if (mounted) {
-        Navigator.of(context).pop(); // Cierra el loading si hay error
+        Navigator.of(context, rootNavigator: true).pop(); //Esto cierra SOLO el diálogo
         setState(() {
           _isLoading = false;
         });
+        Navigator.of(context).pop(); // Cierra el loading si hay error
         print('Error de conexión: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
