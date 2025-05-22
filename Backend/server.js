@@ -146,23 +146,91 @@ app.post('/add', upload.single('image'), async (req, res) => {
 });
 
 app.get("/ornamental", async (req, res) => {
-  try {
-    const filter = { category: "Ornamental" };
-    const plants = await Inventary.find(filter, "name productoimage quantity -_id");
+    try {
+        const filter = {
+            category: "Ornamental"
+        };
+        const plants = await Inventary.find(filter, "name productoimage quantity -_id");
 
-    if (plants.length === 0) {
-      return res.status(404).json({
-        message: "No plants found"
-      });
+        if (plants.length === 0) {
+            return res.status(404).json({
+                message: "No plants found"
+            });
+        }
+
+        res.json(plants);
+    } catch (error) {
+        console.error("Error fetching plants:", error);
+        res.status(500).json({
+            error: "Failed to fetch plants"
+        });
     }
+});
 
-    res.json(plants);
-  } catch (error) {
-    console.error("Error fetching plants:", error);
-    res.status(500).json({
-      error: "Failed to fetch plants"
-    });
-  }
+app.get("/medicinal", async (req, res) => {
+    try {
+        const filter = {
+            category: "Medicinal"
+        };
+        const plants = await Inventary.find(filter, "name productoimage quantity -_id");
+
+        if (plants.length === 0) {
+            return res.status(404).json({
+                message: "No plants found"
+            });
+        }
+
+        res.json(plants);
+    } catch (error) {
+        console.error("Error fetching plants:", error);
+        res.status(500).json({
+            error: "Failed to fetch plants"
+        });
+    }
+});
+
+app.get("/forestal", async (req, res) => {
+    try {
+        const filter = {
+            category: "Forestal"
+        };
+        const plants = await Inventary.find(filter, "name productoimage quantity -_id");
+
+        if (plants.length === 0) {
+            return res.status(404).json({
+                message: "No plants found"
+            });
+        }
+
+        res.json(plants);
+    } catch (error) {
+        console.error("Error fetching plants:", error);
+        res.status(500).json({
+            error: "Failed to fetch plants"
+        });
+    }
+});
+
+app.get("/ground", async (req, res) => {
+    try {
+        const filter = {
+            category: "Tierra"
+        };
+        const plants = await Inventary.find(filter, "name productoimage quantity -_id");
+
+        if (plants.length === 0) {
+            return res.status(404).json({
+                message: "No plants found"
+            });
+        }
+
+        res.json(plants);
+    } catch (error) {
+        console.error("Error fetching plants:", error);
+        res.status(500).json({
+            error: "Failed to fetch plants"
+        });
+    }
 });
 
 

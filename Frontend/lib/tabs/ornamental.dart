@@ -147,7 +147,14 @@ class _OrnamentalScreenState extends State<OrnamentalScreen> {
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const CounterScreen()),
+                      MaterialPageRoute(
+                        builder:
+                            (_) => CounterScreen(
+                              nombrePlanta: planta['name'],
+                              imagenUrl: planta['productoimage'],
+                              cantidad: planta['quantity'],
+                            ),
+                      ),
                     );
                   },
                   style: AppStyles.buttonStyle2,

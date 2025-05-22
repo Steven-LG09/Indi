@@ -3,8 +3,15 @@ import '../styles/styles.dart';
 
 // Widget sin estado para la pantalla de login
 class CounterScreen extends StatelessWidget {
+  final String nombrePlanta;
+  final String imagenUrl;
+  final String cantidad;
+
   const CounterScreen({
     super.key,
+    required this.nombrePlanta,
+    required this.imagenUrl,
+    required this.cantidad,
   }); // Constructor con clave opcional para usar en navegación
 
   @override
@@ -38,7 +45,7 @@ class CounterScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: AppStyles.imageBorderRadius2,
                 child: Image.network(
-                  'https://picsum.photos/300/400',
+                  imagenUrl,
                   height: 160,
                   width: double.infinity,
                   fit: BoxFit.fill,
@@ -46,15 +53,15 @@ class CounterScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32), // Espacio vertical
 
-              const Text(
-                'Nombre de la planta',
+              Text(
+                nombrePlanta,
                 style: AppStyles.plantName, // Usando estilo separado
               ),
 
               const SizedBox(height: 16), // Espacio entre campos
 
-              const Text(
-                'Cantidad: {Number}',
+              Text(
+                'Cantidad: $cantidad',
                 style: AppStyles.quantityText, // Usando estilo separado
               ),
 
@@ -65,30 +72,36 @@ class CounterScreen extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Acción del botón
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Acción no disponible'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
                     },
                     style: AppStyles.buttonStyle,
                     icon: const Icon(
                       Icons.add, // Cambia el ícono si quieres otro
                     ),
-                    label: const Text(
-                      'Sumar',
-                    ),
+                    label: const Text('Sumar'),
                   ),
                   const SizedBox(
                     width: 16,
                   ), // Espacio entre el botón y el input
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Acción del botón
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Acción no disponible'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
                     },
                     style: AppStyles.buttonStyle,
                     icon: const Icon(
                       Icons.remove, // Cambia el ícono si quieres otro
                     ),
-                    label: const Text(
-                      'Restar',
-                    ),
+                    label: const Text('Restar'),
                   ),
                 ],
               ),
@@ -99,13 +112,12 @@ class CounterScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    /*
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TabScreen(),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Acción no disponible'),
+                        backgroundColor: Colors.red,
                       ),
-                    );*/
+                    );
                   },
                   style: AppStyles.buttonStyle,
                   child: const Text('Confirmar'),
