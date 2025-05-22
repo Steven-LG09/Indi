@@ -145,6 +145,27 @@ app.post('/add', upload.single('image'), async (req, res) => {
     }
 });
 
+app.get("/ornamental", async (req, res) => {
+  try {
+    const filter = { category: "Ornamental" };
+    const plants = await Inventary.find(filter, "name productoimage quantity -_id");
+
+    if (plants.length === 0) {
+      return res.status(404).json({
+        message: "No plants found"
+      });
+    }
+
+    res.json(plants);
+  } catch (error) {
+    console.error("Error fetching plants:", error);
+    res.status(500).json({
+      error: "Failed to fetch plants"
+    });
+  }
+});
+
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
