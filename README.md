@@ -36,9 +36,13 @@ Keeping track of plant inventories is crucial for **sustainable gardening, resea
 
 ## Interface Images
 
-<img src="Interface_Images/image1.jpeg" alt="Alt text" width="250" height="350"/>
-<img src="Interface_Images/image2.jpeg" alt="Alt text" width="250" height="350"/>
-<img src="Interface_Images/image3.jpeg" alt="Alt text" width="250" height="350"/>
-<img src="Interface_Images/image4.jpeg" alt="Alt text" width="250" height="350"/>
-<img src="Interface_Images/image5.jpeg" alt="Alt text" width="250" height="350"/>
-<img src="Interface_Images/image6.jpeg" alt="Alt text" width="250" height="350"/>
+<div text-align="center">
+    <img src="Interface_Images/image1.jpeg" alt="Alt text" width="250" height="400"/>
+    <img src="Interface_Images/image2.jpeg" alt="Alt text" width="250" height="400"/>
+    <img src="Interface_Images/image3.jpeg" alt="Alt text" width="250" height="400"/>
+    <img src="Interface_Images/image4.jpeg" alt="Alt text" width="250" height="400"/>
+    <img src="Interface_Images/image5.jpeg" alt="Alt text" width="250" height="400"/>
+    <img src="Interface_Images/image6.jpeg" alt="Alt text" width="250" height="400"/>
+
+</div>
+
