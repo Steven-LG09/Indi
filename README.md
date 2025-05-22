@@ -1,4 +1,4 @@
-# 🪴 Plant Inventory Management System 
+# Plant Inventory Management System 
 
 A modern inventory system designed to **track, manage, and monitor plants** across nurseries, botanical gardens, or agricultural projects. With a clean interface and smart categorization, this system makes it easy to maintain plant data and track quantities.
 
@@ -36,7 +36,8 @@ Keeping track of plant inventories is crucial for **sustainable gardening, resea
 
 ## Interface Images
 
-![Alt text](Interface_Images/image1.jpeg)
+<img src="Interface_Images/image1.jpeg" alt="Alt text" width="150" height="250"/>
+
 
 ![Alt text](Interface_Images/image2.jpeg)
 
